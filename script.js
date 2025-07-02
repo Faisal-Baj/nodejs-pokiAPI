@@ -1,6 +1,7 @@
-let allPokemon = [];
-let currentPage = 1;
-let perPage = 9;
+let fullPokemon = []; //always has the full list
+let allPokemon = [];  //currently displayed list
+let currentPage = 1;  //current page
+let perPage = 9; // num of cards per page
 
 document.addEventListener("DOMContentLoaded", () => {
   loadTypes();
@@ -8,12 +9,16 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 async function loadPokemon() {
-  const res = await fetch('https://pokeapi.co/api/v2/pokemon?limit=150');
+  const res = await fetch('https://pokeapi.co/api/v2/pokemon?limit=90');
   const data = await res.json();
+
   const details = await Promise.all(data.results.map(p => fetch(p.url).then(r => r.json())));
+  
+  fullPokemon = details;
   allPokemon = details;
   showPage();
 }
+
 
 function showPage() {
   const container = document.getElementById("pokeContainer");
@@ -56,13 +61,17 @@ function prevPage() {
 
 function searchPoke() {
   const input = document.getElementById("pokeInput").value.toLowerCase();
-  const filtered = allPokemon.filter(p => p.name.includes(input));
-  if (filtered.length > 0) {
-    allPokemon = filtered;
-    currentPage = 1;
-    showPage();
+
+  if (input === "") {
+    allPokemon = fullPokemon;
+  } else {
+    allPokemon = fullPokemon.filter(p => p.name.includes(input));
   }
+
+  currentPage = 1;
+  showPage();
 }
+
 
 async function loadTypes() {
   const res = await fetch("https://pokeapi.co/api/v2/type");
@@ -81,15 +90,17 @@ function filterType() {
   const selected = document.getElementById("typeFilter").value;
 
   if (selected === "all") {
-    loadPokemon();
-    return;
+    allPokemon = fullPokemon;
+  } else {
+    allPokemon = fullPokemon.filter(p => 
+      p.types.some(t => t.type.name === selected)
+    );
   }
 
-  const filtered = allPokemon.filter(p => p.types.some(t => t.type.name === selected));
-  allPokemon = filtered;
   currentPage = 1;
   showPage();
 }
+
 
 async function showDetails(name) {
   const modal = document.getElementById('pokeModal');
