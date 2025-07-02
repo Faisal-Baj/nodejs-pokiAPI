@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 async function loadPokemon() {
-  const res = await fetch('https://pokeapi.co/api/v2/pokemon?limit=90');
+  const res = await fetch('https://pokeapi.co/api/v2/pokemon?limit=150');
   const data = await res.json();
 
   const details = await Promise.all(data.results.map(p => fetch(p.url).then(r => r.json())));
