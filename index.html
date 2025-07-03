@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Pokemon!</title>
+</head>
+<body class="bg-stone-800 p-4">
+    <form class="flex gap-2">
+        <input type="text" id="pokiName" placeholder="Search for pokemon..." class="rounded p-2">
+        <button type="submit" class="bg-white text-black rounded px-4 py-2">search pokemon</button>
+        <button type="button" id="clear" class="bg-white text-red-600 rounded px-4 py-2">clear</button>
+    </form>
+    <div id="display"></div>
+    <div id="pokecontainer" class="grid grid-cols-3 md:grid-cols-5 gap-4 mt-6"></div>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>
